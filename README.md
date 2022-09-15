@@ -1,6 +1,6 @@
 # Вступительное задание в Школу Бэкенд Разработки 2022
 
-url - https://perform-2058.usr.yandex-academy.ru/docs
+url с интерактивной документацией - https://perform-2058.usr.yandex-academy.ru/docs
 
 Задача: реализовать api для файловой системы
 
