@@ -181,16 +181,23 @@ async def create_nodes(data: CreateSchema, request: Request):
             await mongo_client.updates.insert_one({"id": result["id"], "updateList": [date], "updateView": [result]})
             continue
 
-        updateList = updates_collection["updateList"]
-        viewList = updates_collection["updateView"]
-        if not updateList or (updateList and updateList[-1] != date):
-            updateList.append(date)
-            if result.get('children'):
-                del result["children"]
+        if not updates_collection:
             if result.get('_id'):
                 del result['_id']
-            viewList.append(result)
-            await mongo_client.updates.update_one({"id": result["id"]}, {"$set": {"updateList": updateList}})
-            await mongo_client.updates.update_one({"id": result["id"]}, {"$set": {"updateView": viewList}})
+            if result.get('children'):
+                del result["children"]
+            await mongo_client.updates.insert_one({"id": result["id"], "updateList": [date], "updateView": [result]})
+        else:    
+            updateList = updates_collection["updateList"]
+            viewList = updates_collection["updateView"]
+            if not updateList or (updateList and updateList[-1] != date):
+                updateList.append(date)
+                if result.get('children'):
+                    del result["children"]
+                if result.get('_id'):
+                    del result['_id']
+                viewList.append(result)
+                await mongo_client.updates.update_one({"id": result["id"]}, {"$set": {"updateList": updateList}})
+                await mongo_client.updates.update_one({"id": result["id"]}, {"$set": {"updateView": viewList}})
 
     return {"Success": True}
