@@ -1,14 +1,13 @@
 # encoding=utf8
 
 import json
-import os
 import subprocess
 import sys
 import urllib.error
 import urllib.parse
 import urllib.request
 
-API_BASEURL = "http://localhost:8080"
+API_BASEURL = "http://localhost:80"
 
 ROOT_ID = "069cb8d7-bbdd-47d3-ad8f-82ef4c269df1"
 
@@ -273,19 +272,17 @@ def test_all():
     test_updates()
     test_history()
     test_delete()
-    os.remove("expected.json")
-    os.remove("response.json")
 
 
 def main():
     global API_BASEURL
     test_name = None
 
-    # for arg in sys.argv[1:]:
-    #     if re.match(r"^https?://", arg):
-    #         API_BASEURL = arg
-    #     elif test_name is None:
-    #         test_name = arg
+    for arg in sys.argv[1:]:
+        if re.match(r"^https?://", arg):
+            API_BASEURL = arg
+        elif test_name is None:
+            test_name = arg
 
     if API_BASEURL.endswith('/'):
         API_BASEURL = API_BASEURL[:-1]

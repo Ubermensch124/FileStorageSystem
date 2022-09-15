@@ -22,4 +22,3 @@ class CreateSchema(BaseModel):
                 "updateDate": "2022-05-28T21:12:01.000Z"
             }
         }
-
